@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>
+        {% block title %}
+        Document
+        {% endblock %}
+    </title>
+    <link rel="stylesheet" href="{{ asset('node_modules/bootstrap/dist/css/bootstrap.css') }}">
+    {% block stylesheet %}
+        <link rel="stylesheet" href="link2.css">
+    {% endblock %}
+</head>
+<body>
+
+<H1>Header</H1>
+<a href="{{ path('app_todo') }}"> Todo </a>
+<a href="{{ url('first2') }}"> First </a>
+<hr>
+
+{% block body %}
+    <h2>Bonjour GL2 / RT2 </h2>
+{% endblock %}
+
+<hr>
+<div class="alert alert-primary">Footer</div>
+
+
+{% block js %}
+{% endblock %}
+</body>
+</html>

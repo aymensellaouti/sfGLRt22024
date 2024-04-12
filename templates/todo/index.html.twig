@@ -1,0 +1,15 @@
+{% include 'layout.html.twig' %}
+{% block stylesheet %}
+    <style>
+        .rouge {
+            background-color: red;
+        }
+        .jaune {
+            background-color: yellow;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+{{ render(controller('App\\Controller\\TodoController::list')) }}
+{% endblock %}

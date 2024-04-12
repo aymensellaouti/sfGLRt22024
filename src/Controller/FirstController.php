@@ -15,15 +15,17 @@ class FirstController extends AbstractController
     #[Route('/first', name: "first2")]
     public function first2(Request $request): Response
     {
-       return $this->redirectToRoute('second');
-       dump($request->query->get('name'));
-       return new Response('<html><body><h1>Je suis le First First</h1></body></html> ');
+//       return $this->forward('App\Controller\FirstController::second');
+//       return $this->redirectToRoute('second');
+//       dump($request->query->get('name'));
+//       return new Response('<html><body><h1>Je suis le First First</h1></body></html> ');
+        return $this->render('layout.html.twig');
     }
 
     #[Route('/second', name: "second")]
     public function second(): Response
     {
-        return new Response('<html><body><h1>Je suis le First First</h1></body></html>');
+        return $this->render('first/second.html.twig');
     }
 
 
@@ -43,7 +45,7 @@ class FirstController extends AbstractController
         return $this->render('first/session.html.twig', ['message' => $message]);
     }
 
-    #[Route('/{first}', name: "first")]
+    #[Route('/test/{first}', name: "first")]
     public function first($first): Response
     {
         return $this->render('first/index.html.twig', [

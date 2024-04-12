@@ -1,0 +1,18 @@
+
+<table border="2">
+    <tr>
+        <th>Name</th>
+        <th>Content</th>
+    </tr>
+{#   Todos de la base de données  #}
+    {% for todo in todos %}
+        <tr class="{% if loop.index is even %}rouge{% else %}jaune{% endif %}">
+            <td>{{ todo.name }}</td>
+            <td>{{ todo.content }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="2"> Data unavailable </td>
+        </tr>
+    {% endfor %}
+</table>

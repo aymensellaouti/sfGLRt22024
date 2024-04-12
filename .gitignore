@@ -21,5 +21,7 @@
 
 ###> symfony/asset-mapper ###
 /public/assets/
+/public/node_modules/
 /assets/vendor/
+
 ###< symfony/asset-mapper ###
