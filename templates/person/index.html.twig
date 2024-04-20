@@ -1,0 +1,18 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Liste des personnes{% endblock %}
+
+{% block body %}
+    <div class="alert alert-info">
+        Liste des personnes
+    </div>
+    
+    <ol class="list-group">
+        {% for person in persons %}
+            <li class="list-group-item">
+                {{ person.firstName }} {{ person.name }} a {{ person.age }} ans
+                <a href="{{ path('app_remove_person', {id: person.id}) }}">X</a>
+            </li>
+        {% endfor %}
+    </ol>
+{% endblock %}
