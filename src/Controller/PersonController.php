@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Person;
+use App\Form\PersonType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -27,24 +29,23 @@ class PersonController extends AbstractController
             'persons' => $persons,
         ]);
     }
-    #[Route('/add', name: 'app_add_person')]
-    public function add(): Response
+    #[Route('/edit/{id?0}', name: 'app_edit_person')]
+    public function add(Request $request, Person $person = null): Response
     {
-        $person = new Person();
-        $person2 = new Person();
-        $person->setName('sellaouti')
-               ->setFirstname('aymen')
-               ->setAge(41);
-        $person2->setName('sellaouti2')
-               ->setFirstname('aymen2')
-               ->setAge(41);
-//        Elle le met dans la transaction
-        $this->manager->persist($person);
-        $this->manager->persist($person2);
-//        Execute transaction
-        $this->manager->flush();
+        if(!$person)
+            $person = new Person();
+        $form = $this->createForm(PersonType::class, $person);
 
-        return $this->forward('App\Controller\PersonController::index');
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $this->manager->persist($person);
+            $this->manager->flush();
+            return $this->forward('App\Controller\PersonController::index');
+        }
+        return $this->render('person/add.html.twig', [
+            'form' => $form->createView()
+        ]);
 
     }
     #[Route('/remove/{id}', name: 'app_remove_person')]

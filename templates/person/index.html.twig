@@ -6,10 +6,12 @@
 <div class="alert alert-info">Liste des personnes</div>
 
     <ol class="list-group">
+        <a href="{{ path('app_edit_person') }}" class="btn btn-primary">Add Personne</a>
         {% for person in persons %}
             <li class="list-group-item list-group-item-{% if loop.index is even%}primary{% else %}secondary{% endif%} ">
                 {{ person.firstname }} {{ person.name }} a {{ person.age }} ans
-                <a href="{{ path('app_remove_person', {id: person.id}) }}">X</a>
+                <a class="btn btn-danger"  href="{{ path('app_remove_person', {id: person.id}) }}">Delete</a>
+                <a class="btn btn-success" href="{{ path('app_edit_person', {id: person.id}) }}">Edit</a>
             </li>
         {% endfor %}
     </ol>

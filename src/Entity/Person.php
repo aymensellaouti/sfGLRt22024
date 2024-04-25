@@ -3,18 +3,24 @@
 namespace App\Entity;
 
 use App\Repository\PersonRepository;
+use App\Traits\TimestampTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: PersonRepository::class)]
 class Person
 {
+
+//    use TimestampTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 30)]
+    #[
+        ORM\Column(length: 30),
+        Assert\NotBlank(message: 'le nom est obligatoire')
+    ]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
@@ -77,5 +83,8 @@ class Person
         $this->cours = $cours;
 
         return $this;
+    }
+    public function __toString(): string {
+        return $this->name." a ".$this->age. " ans";
     }
 }
