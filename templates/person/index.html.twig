@@ -8,12 +8,13 @@
     <div class="alert alert-info">
         Liste des personnes
     </div>
-
+    <a href="{{ path('app_edit_person')}}" class="btn btn-primary">Add Person</a>
     <ol class="list-group">
         {% for person in persons %}
             <li class="list-group-item">
                 {{ person.name}} {{ person.firstname}} {{ person.age}}
-                <a href="{{ path('app_remove_person',{id: person.id}) }}">X</a>
+                <a class="btn btn-danger" href="{{ path('app_remove_person',{id: person.id}) }}">Delete</a>
+                <a class="btn btn-warning" href="{{ path('app_edit_person',{id: person.id}) }}">Edit</a>
             </li>
         {% endfor %}
     </ol>

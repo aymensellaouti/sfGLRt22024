@@ -3,10 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\PersonRepository;
+use App\Traits\TimestampTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Entity(repositoryClass: PersonRepository::class)]
+use Symfony\Component\Validator\Constraints as Assert;
+#[
+    ORM\Entity(repositoryClass: PersonRepository::class),
+    ORM\HasLifecycleCallbacks()
+]
 class Person
 {
     #[ORM\Id]
@@ -14,13 +18,22 @@ class Person
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    use TimestampTrait;
+
+    #[
+        ORM\Column(length: 50),
+        Assert\NotBlank(message: 'Ce champ est obligatoire')
+    ]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::SMALLINT)]
+    #[
+        ORM\Column(type: Types::SMALLINT),
+        Assert\NotBlank(message: 'Ce champ est obligatoire'),
+        Assert\LessThanOrEqual(60, message: 'Sayeb a3lik bara erta7 khirlek :D')
+    ]
     private ?int $age = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50),         Assert\NotBlank(message: 'Ce champ est obligatoire')]
     private ?string $firstname = null;
 
     #[ORM\ManyToOne(inversedBy: 'people')]
@@ -77,5 +90,10 @@ class Person
         $this->cours = $cours;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->firstname." ".$this->name;
     }
 }

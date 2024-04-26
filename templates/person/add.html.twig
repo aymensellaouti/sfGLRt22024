@@ -1,0 +1,20 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+{#    JE veux afficher le formulaire#}
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    <div class="row">
+        <div class="col">
+            {{ form_row(form.firstname) }}
+        </div>
+        <div class="col">
+            {{ form_row(form.name) }}
+        </div>
+    </div>
+    {{ form_rest(form) }}
+{% endblock %}
+
+{% block title %}
+    Add Person
+{% endblock %}
+
