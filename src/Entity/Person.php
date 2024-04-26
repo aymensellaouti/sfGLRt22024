@@ -3,10 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\PersonRepository;
+use App\Traits\TimeStampTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
-#[ORM\Entity(repositoryClass: PersonRepository::class)]
+use Symfony\Component\Validator\Constraints as Assert;
+#[
+    ORM\Entity(repositoryClass: PersonRepository::class),
+    ORM\HasLifecycleCallbacks()
+]
 class Person
 {
     #[ORM\Id]
@@ -14,7 +18,11 @@ class Person
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    use TimeStampTrait;
+    #[
+        ORM\Column(length: 50),
+        Assert\NotBlank(message: 'le champ ne peut pas etre vide')
+    ]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
@@ -77,5 +85,10 @@ class Person
         $this->cours = $cours;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+       return $this->name.' '.$this->firstname;
     }
 }

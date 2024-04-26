@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Person;
+use App\Form\PersonType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
@@ -27,23 +29,24 @@ class PersonController extends AbstractController
             'persons' => $persons,
         ]);
     }
-    #[Route('/add', name: 'app_add_person')]
-    public function add(): Response
+    #[Route('/edit/{id?0}', name: 'app_edit_person')]
+    public function add(Request $request, Person $person = null): Response
     {
-        $person = new Person();
-        $person
-            ->setName('Sellaouti')
-            ->setFirstname('aymen')
-            ->setAge(41);
-        $this->manager->persist($person);
-        $person2 = new Person();
-        $person2
-            ->setName('Sellaouti2')
-            ->setFirstname('aymen2')
-            ->setAge(41);
-        $this->manager->persist($person2);
-        $this->manager->flush();
-        return $this->forward('App\Controller\PersonController::index');
+        if (!$person)
+            $person = new Person();
+        // Elle crée un formulaire qui l'image de l'objet person
+        $form = $this->createForm(PersonType::class, $person);
+        $form->remove('createdAt');
+        $form->remove('updatedAt');
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()){
+            $this->manager->persist($person);
+            $this->manager->flush();
+            return $this->forward('App\Controller\PersonController::index');
+        }
+        return $this->render('person/add.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
     #[Route('/delete/{id}', name: 'app_delete_person')]
     public function delete(Person $person= null): Response
